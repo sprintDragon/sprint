@@ -30,7 +30,7 @@
     <root>
         <priority value="DEBUG"/>
         <appender-ref ref="CONSOLE"/>
-        <appender-ref ref="FILE-ERROR"/>
+        <!--<appender-ref ref="FILE-ERROR"/>-->
     </root>
 
     <!--<appender name="IBatis" class="org.apache.log4j.ConsoleAppender">-->
