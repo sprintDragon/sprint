@@ -12,7 +12,6 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
-    <!-- 订单任务驱动引擎公用线程池-->
     <bean id="traceThreadPool" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="4"/>
         <property name="maxPoolSize" value="4"/>
