@@ -45,6 +45,7 @@ public class TestDemoBiz {
                 lock = false;
             }
         });
+        //
         while (lock) {
             Future<String> f = executorService.submit(new Callable<String>() {
                 @Override
