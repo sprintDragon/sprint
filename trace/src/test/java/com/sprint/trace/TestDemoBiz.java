@@ -28,8 +28,8 @@ public class TestDemoBiz {
     }
 
     volatile boolean lock = true;
-    final int executors = 4*2+1;
-    final long wait_time = 1000*60*5;
+    final int executors = 4*4+1;
+    final long wait_time = 1000*60*10;
 
     @Test
     public void testMuti() throws Exception {
