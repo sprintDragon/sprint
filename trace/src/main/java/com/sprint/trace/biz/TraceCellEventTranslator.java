@@ -26,7 +26,7 @@ public class TraceCellEventTranslator implements EventTranslator<TraceCell> {
         } catch (Exception e) {
             logger.error("translateTo copyProperties error event={},sequence={}", event, sequence, e);
         }
-        logger.info("push kafka event={},sequence={}", event, sequence);
+        //logger.info("push kafka event={},sequence={}", event, sequence);
     }
 
 }
