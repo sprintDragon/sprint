@@ -21,20 +21,22 @@ public class TraceCellEventHandler implements MultiEvenHandler<TraceCell> {
     @Override
     public void onEvent(TraceCell event, long sequence, boolean endOfBatch) throws Exception {
         logger.info("consumer kafka event={},sequence={},endOfBatch={}", event, sequence, endOfBatch);
-        executorService.submit(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    Thread.sleep(20);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+
+//        executorService.submit(new Runnable() {
+//            @Override
+//            public void run() {
+//                try {
+//                      Thread.sleep(30);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
     }
 
     @Override
     public void onEvent(List<TraceCell> event, long sequence, boolean endOfBatch) throws Exception {
-        logger.info("consumer2 kafka event={},sequence={},endOfBatch={}", event, sequence, endOfBatch);
+        //logger.info("consumer2 kafka event={},sequence={},endOfBatch={}", event, sequence, endOfBatch);
+        Thread.sleep(30);
     }
 }

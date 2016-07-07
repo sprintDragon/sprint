@@ -28,34 +28,45 @@ public class TestDemoBiz {
     }
 
     volatile boolean lock = true;
+    final int executors = 20;
+    final long wait_time = 1000*60*5;
 
     @Test
     public void testMuti() throws Exception {
-        ExecutorService executorService = Executors.newFixedThreadPool(100);
-        long nowTime = System.nanoTime();
-        long num = 0;
-        executorService.submit(new Runnable() {
+        ExecutorService executorService = Executors.newFixedThreadPool(executors);
+        executorService.submit(new Runnable()
+        {
             @Override
             public void run() {
                 try {
-                    Thread.sleep(2000000);
+                    Thread.sleep(wait_time);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 lock = false;
             }
         });
-        //
-        while (lock) {
-            Future<String> f = executorService.submit(new Callable<String>() {
+        for (int i = 0; i < executors; i++)
+        {
+            executorService.submit(new Runnable()
+            {
                 @Override
-                public String call() throws Exception {
-                    return iDemoBiz.queryOrder(System.currentTimeMillis(), 11l);
+                public void run() {
+                    long nowTime = System.nanoTime();
+                    long num = 0;
+                    while (lock) {
+                        iDemoBiz.queryOrder(System.currentTimeMillis(), 11l);
+                        num++;
+                        try
+                        {
+                            Thread.sleep(1);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    System.out.println("时间消耗 : " + (System.nanoTime() - nowTime) + ",方法执行条数：" + num);
                 }
             });
-            num++;
-            Thread.sleep(1);
         }
-        System.out.println("时间消耗 : " + (System.nanoTime() - nowTime) + ",方法执行条数：" + num);
     }
 }

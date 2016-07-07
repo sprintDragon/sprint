@@ -7,6 +7,8 @@ import com.sprint.trace.domain.TraceCell;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
@@ -20,6 +22,8 @@ import java.util.UUID;
 @Aspect
 @Component
 public class TraceableAspect {
+
+    public final static Logger logger = LoggerFactory.getLogger(TraceableAspect.class);
 
     @Resource
     Disruptor disruptor;
@@ -54,6 +58,7 @@ public class TraceableAspect {
         if (key == null) {
             return;
         }
+        logger.info("环形缓冲剩余空间："+disruptor.getRingBuffer().remainingCapacity());
         disruptor.publishEvent(new TraceCellEventTranslator(fixTraceInfo(key, pjp.getArgs(), ret, ree)));
     }
 
