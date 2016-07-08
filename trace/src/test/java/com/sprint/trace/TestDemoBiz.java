@@ -33,6 +33,7 @@ public class TestDemoBiz {
 
     @Test
     public void testMuti() throws Exception {
+        long start = System.currentTimeMillis();
         ExecutorService executorService = Executors.newFixedThreadPool(executors);
         executorService.submit(new Runnable()
         {
@@ -71,6 +72,7 @@ public class TestDemoBiz {
             System.out.println("已提交线程 " + (i+1));
             Thread.sleep(10*1000);
         }
-        for (;;) ;
+
+        Thread.sleep(wait_time - (System.currentTimeMillis() - start));
     }
 }
