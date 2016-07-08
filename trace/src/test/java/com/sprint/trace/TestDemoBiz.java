@@ -68,7 +68,7 @@ public class TestDemoBiz {
                     System.out.println("时间消耗 : " + (System.nanoTime() - nowTime) + ",方法执行条数：" + num);
                 }
             });
-            System.out.println("已提交线程 " + i+1);
+            System.out.println("已提交线程 " + (i+1));
             Thread.sleep(10*1000);
         }
         for (;;) ;
