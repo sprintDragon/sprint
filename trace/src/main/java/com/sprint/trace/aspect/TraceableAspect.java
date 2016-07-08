@@ -1,5 +1,6 @@
 package com.sprint.trace.aspect;
 
+import com.lmax.disruptor.Sequence;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.sprint.trace.biz.TraceCellEventHandler;
 import com.sprint.trace.biz.TraceCellEventTranslator;
@@ -12,7 +13,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * User: wangdi
@@ -27,6 +30,41 @@ public class TraceableAspect {
 
     @Resource
     Disruptor disruptor;
+    private final Sequence sequence = new Sequence(0);
+
+    {
+        new Thread(){
+            @Override
+            public void run() {
+                while (true)
+                {
+                    if(logger!=null && disruptor!=null)
+                        logger.info("环形缓冲剩余空间："+disruptor.getRingBuffer().remainingCapacity());
+                    try {
+                        Thread.sleep(5*1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while (true)
+                {
+                    long start = System.currentTimeMillis();
+                    logger.info("每分钟生产数据量："+ sequence.get());
+                    sequence.set(0);
+                    try {
+                        Thread.sleep(60*1000 - (System.currentTimeMillis() - start));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
 
     /**
      * 暂时 @After 应该比较合适,但是未来不一定,所以暂时使用熟练的 @Around
@@ -58,8 +96,7 @@ public class TraceableAspect {
         if (key == null) {
             return;
         }
-        if(disruptor.getRingBuffer().remainingCapacity() == 0 )
-            logger.info("环形缓冲剩余空间："+disruptor.getRingBuffer().remainingCapacity());
+        sequence.incrementAndGet();
         disruptor.publishEvent(new TraceCellEventTranslator(fixTraceInfo(key, pjp.getArgs(), ret, ree)));
     }
 

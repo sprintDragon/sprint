@@ -28,7 +28,7 @@ public class TestDemoBiz {
     }
 
     volatile boolean lock = true;
-    final int executors = 4*2+1;
+    final int executors = 4*10+1;
     final long wait_time = 1000*60*30;
 
     @Test
@@ -70,9 +70,8 @@ public class TestDemoBiz {
                 }
             });
             System.out.println("已提交线程 " + (i+1));
-            Thread.sleep(10*1000);
+            Thread.sleep(i* 2 * 1000);
         }
-
         Thread.sleep(wait_time - (System.currentTimeMillis() - start));
     }
 }
