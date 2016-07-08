@@ -29,7 +29,7 @@ public class TestDemoBiz {
 
     volatile boolean lock = true;
     final int executors = 4*2+1;
-    final long wait_time = 1000*60*10;
+    final long wait_time = 1000*60*30;
 
     @Test
     public void testMuti() throws Exception {
@@ -48,6 +48,7 @@ public class TestDemoBiz {
         });
         for (int i = 0; i < executors; i++)
         {
+
             executorService.submit(new Runnable()
             {
                 @Override
@@ -67,6 +68,9 @@ public class TestDemoBiz {
                     System.out.println("时间消耗 : " + (System.nanoTime() - nowTime) + ",方法执行条数：" + num);
                 }
             });
+            System.out.println("已提交线程 " + i+1);
+            Thread.sleep(10*1000);
         }
+        for (;;) ;
     }
 }

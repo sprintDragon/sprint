@@ -58,7 +58,8 @@ public class TraceableAspect {
         if (key == null) {
             return;
         }
-        logger.info("环形缓冲剩余空间："+disruptor.getRingBuffer().remainingCapacity());
+        if(disruptor.getRingBuffer().remainingCapacity() == 0 )
+            logger.info("环形缓冲剩余空间："+disruptor.getRingBuffer().remainingCapacity());
         disruptor.publishEvent(new TraceCellEventTranslator(fixTraceInfo(key, pjp.getArgs(), ret, ree)));
     }
 
