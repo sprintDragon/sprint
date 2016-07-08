@@ -11,8 +11,8 @@
     <modules>
         <module>trace</module>
     </modules>
-
-
+<!--CMS-->
+<!---server -Xmx1024m -Xms1024m -XX:NewSize=384m -Xss512k -XX:+UseConcMarkSweepGC -XX:+UseParNewGC-->
     <properties>
         <project>sprint</project>
         <major-version>1</major-version>
